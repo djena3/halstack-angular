@@ -1,0 +1,86 @@
+<span [formGroup]="parent.control">
+    <ng-container *ngIf="!hideHours">
+      <div *ngIf="showStart">Hour(s)</div>
+  
+      <mat-form-field  *ngIf="showStart">
+        <mat-label>start from</mat-label>
+        <mat-select formControlName="startHours">
+          <mat-option [value]="'none'" *ngIf="includeNone">
+            None
+          </mat-option>
+          <mat-option *ngFor="let hour of hours" [value]="hour">{{hour}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label *ngIf="!showStart">Hour(s)</mat-label>
+        <mat-select formControlName="hours">
+          <mat-option [value]="'*'" *ngIf="includeEvery">
+            Every
+          </mat-option>
+          <mat-option *ngFor="let hour of hours" [value]="hour">{{hour}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+    </ng-container>
+  
+    <ng-container *ngIf="!hideMinutes">
+      <span *ngIf="!hideHours">:</span>
+      <div *ngIf="showStart">Minute(s)</div>
+     
+      <mat-form-field *ngIf="showStart">
+        <mat-label>start from</mat-label>
+  
+        <mat-select formControlName="startMinutes">
+          <mat-option [value]="'none'" *ngIf="includeNone">
+            None
+          </mat-option>
+          <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label *ngIf="!showStart">Minute(s)</mat-label>
+        <mat-select formControlName="minutes">
+          <mat-option [value]="'*'" *ngIf="includeEvery">
+            Every
+          </mat-option>
+          <mat-option *ngFor="let minute of minutes" [value]="minute">{{minute}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  
+    <ng-container *ngIf="!hideSeconds">
+      <span *ngIf="!hideMinutes">:</span>
+      <div *ngIf="showStart">Second(s)</div>
+      <mat-form-field *ngIf="showStart">
+        <mat-label>start from</mat-label>
+        <mat-select formControlName="startSeconds">
+          <mat-option [value]="'none'" *ngIf="includeNone">
+            None
+          </mat-option>
+          <mat-option *ngFor="let second of seconds" [value]="second">{{second}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field>
+        <mat-label *ngIf="!showStart">Second(s)</mat-label>
+        <mat-select formControlName="seconds">
+          <mat-option [value]="'*'" *ngIf="includeEvery">
+            Every
+          </mat-option>
+          <mat-option *ngFor="let second of seconds" [value]="second">{{second}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  
+    <ng-container *ngIf="!use24HourTime">
+      <span></span>.
+      <mat-form-field>
+        <mat-select formControlName="hourType">
+          <mat-option *ngFor="let hourType of hourTypes" [value]="hourType">{{hourType}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+  </span>
+  
