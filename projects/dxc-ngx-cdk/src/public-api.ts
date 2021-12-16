@@ -266,5 +266,9 @@ export * from './lib/models/localstorage/storage-serializer';
 export * from './lib/helpers/localstorage/storage-config';
 export * from './lib/helpers/localstorage/storage-serializer';
 export * from './lib/helpers/date/date-helper';
-
 export * from "./lib/dxc-lib.module";
+export * from "./lib/dxc-cron-editor/dxc-cron-editor.module"
+export * from "./lib/dxc-cron-editor/cronoptions";
+export * from './lib/dxc-cron-editor/enums';
+export * from './lib/dxc-cron-editor/dxc-cron-editor.component';
+export * from './lib/dxc-cron-editor/dxc-time-picker/dxc-time-picker.component';

@@ -50,7 +50,9 @@
   <div *ngSwitchCase="'status'">
     <div class="grid-status-box">
       <span class="grid-status-msg">{{gridAPIRow.status?.state}}</span>
-      <div class="{{'grid-progress-bar progress progress-bar progress-bar-striped bg-'+ gridAPIRow.status?.type }}">
+      <div *ngIf="gridAPIRow.status?.state == 'Running'" class="{{'grid-progress-bar progress progress-bar progress-bar-striped progress-bar-animated bg-'+ gridAPIRow.status?.type }}">
+      </div>
+      <div *ngIf="gridAPIRow.status?.state != 'Running'" class="{{'grid-progress-bar progress progress-bar bg-'+ gridAPIRow.status?.type }}">
       </div>
     </div>
     <span class="mdi mdi-console grid-status-icon" (click)="invokeParentMethod();"></span>
