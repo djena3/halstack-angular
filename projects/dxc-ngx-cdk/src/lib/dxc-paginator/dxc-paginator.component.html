@@ -30,6 +30,7 @@
       [iconSrc]="firstImgSrc"
       [disabled]="currentPageInternal === 1"
       [tabIndexValue]="tabIndexValue"
+      ariaLabel="{{globalResource.tltfirstPage?.description}}"
     ></dxc-button>
     <dxc-button
       *ngIf="showPrev"
@@ -40,6 +41,8 @@
       [iconSrc]="prevImgSrc"
       [disabled]="currentPageInternal === 1"
       [tabIndexValue]="tabIndexValue"
+      ariaLabel="{{globalResource.tltPreviousPage?.description}}"
+
     ></dxc-button>
     <span class="text-nowrap" *ngIf="!showGoToPage"> Page: {{ currentPageInternal }} of {{ totalPages }} </span>
     <span *ngIf="showGoToPage" class="go-to-page">
@@ -67,6 +70,7 @@
       [iconSrc]="nextImgSrc"
       [disabled]="currentPageInternal === totalPages"
       [tabIndexValue]="tabIndexValue"
+      ariaLabel="{{globalResource.tltnextPage?.description}}"
     >
   </dxc-button>
     <dxc-button
@@ -78,6 +82,7 @@
       [iconSrc]="lastImgSrc"
       [disabled]="currentPageInternal === totalPages"
       [tabIndexValue]="tabIndexValue"
+      ariaLabel="{{globalResource.tltLastPage?.description}}"
     >
   </dxc-button>
   </div>

@@ -10,6 +10,7 @@ import {
 import { BehaviorSubject } from "rxjs";
 import { coerceNumberProperty, coerceArray } from "@angular/cdk/coercion";
 import { css } from "emotion";
+import { ConfigurationsetupService } from './../services/startup/configurationsetup.service';
 
 @Component({
   selector: "dxc-paginator",
@@ -17,6 +18,7 @@ import { css } from "emotion";
   styleUrls: ["./dxc-paginator.component.scss"],
 })
 export class DxcPaginatorComponent implements OnInit {
+  globalResource: { [key: string]: { description: string, type: string } };
   @Input()
   get currentPage(): number {
     return this._currentPage;
@@ -100,13 +102,16 @@ export class DxcPaginatorComponent implements OnInit {
     tabIndexValue: 0
   });
 
-  constructor() {
+  constructor(
+    public config: ConfigurationsetupService,
+ ) {
     this.currentPage = 1;
     this.itemsPerPage = 5;
     this.totalItems = 1;
   }
 
   ngOnInit() {
+    this.globalResource = this.config.configservice.Resources;
     this.calculateInternalValues(this.defaultInputs.getValue());
     this.setButtonVisibility(this.paginationActions);
     this.className = `${this.getDynamicStyle()}`;
