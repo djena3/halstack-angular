@@ -296,10 +296,9 @@
             </mat-radio-button>
             <mat-radio-button name="custom-radio" class="cron-editor-radio-button" value="cust"
               [ngClass]="state.formRadioClass">
-              On the
-              <div>Days</div>
+              
               <mat-form-field formGroupName="custom">              
-                <mat-label>start from</mat-label>
+                <dxc-label id="lbl_startDays" [text]="resource?.daysStartFrom.description"></dxc-label>
                 <dxc-select class="main-dd-filter"  [ngClass]="options.formSelectClass" [customHandler]="false" tabIndexValue="-1" tabindex="0"
                     aria-labelledby="lbl_startDays" id="startDays" matTooltip="" margin="small" size="fitContent"
                     formControlName="startDays">

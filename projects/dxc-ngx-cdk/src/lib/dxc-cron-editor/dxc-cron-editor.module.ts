@@ -10,11 +10,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DxcTimePickerComponent } from './dxc-time-picker/dxc-time-picker.component';
 import { DxcSelectModule } from '../dxc-select/select-module';
-
+import { DxcLabelModule } from '../dxc-label/dxc-label.module';
 @NgModule({
   imports: [
     CommonModule,
     DxcSelectModule,
+    DxcLabelModule,
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
