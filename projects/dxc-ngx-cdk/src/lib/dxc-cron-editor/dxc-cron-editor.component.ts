@@ -4,7 +4,7 @@ import { Days, MonthWeeks, Months } from './enums';
 import { ControlValueAccessor, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { CronOptions } from './cronoptions';
-
+import { ConfigurationsetupService } from '../services/startup/configurationsetup.service';
 
 export const CRON_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -39,7 +39,7 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
   monthlyForm: FormGroup;
   yearlyForm: FormGroup;
   advancedForm: FormGroup;
-
+  @Input() public resource: any;
   @Input()
   get cron(): string {
     return this.localCron;
@@ -70,7 +70,9 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
     return this.options.cronFlavor === 'quartz' ? '?' : '*';
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private config : ConfigurationsetupService) { 
+   // this.resources = config.configservice.Resources;
+  }
 
   /* Update the cron output to that of the selected tab.
    * The cron output value is updated whenever a form is updated. To make it change in response to tab selection, we simply reset
