@@ -1,6 +1,6 @@
 <span [formGroup]="parent.control">
     <ng-container *ngIf="!hideHours">
-      <div *ngIf="showStart">Hour(s)</div>
+      <div class="pb-3" *ngIf="showStart">Hour(s)</div>
   
       <mat-form-field  *ngIf="showStart">
         <mat-label>start from</mat-label>
@@ -26,7 +26,7 @@
   
     <ng-container *ngIf="!hideMinutes">
       <span *ngIf="!hideHours">:</span>
-      <div *ngIf="showStart">Minute(s)</div>
+      <div class="pb-3" *ngIf="showStart">Minute(s)</div>
      
       <mat-form-field *ngIf="showStart">
         <mat-label>start from</mat-label>
@@ -52,7 +52,7 @@
   
     <ng-container *ngIf="!hideSeconds">
       <span *ngIf="!hideMinutes">:</span>
-      <div *ngIf="showStart">Second(s)</div>
+      <div class="pb-3" *ngIf="showStart">Second(s)</div>
       <mat-form-field *ngIf="showStart">
         <mat-label>start from</mat-label>
         <mat-select formControlName="startSeconds">

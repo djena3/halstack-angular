@@ -10,7 +10,6 @@
 .leftMenuItem:hover .btn-link-list,
 .highlightsection .btn-link-list {
   box-shadow: 0 2px 0 0px var(--high-light-text-color) !important;
-  position: relative;
 }
 
 .highlightsection {
@@ -33,7 +32,7 @@
   float: right;
   position: absolute;
   right: 0px;
-  top: 0px;
+  top: 11px;
 }
 
 .badge-space{
