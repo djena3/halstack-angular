@@ -11,6 +11,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DxcTimePickerComponent } from './dxc-time-picker/dxc-time-picker.component';
 import { DxcSelectModule } from '../dxc-select/select-module';
 import { DxcLabelModule } from '../dxc-label/dxc-label.module';
+import { DxcInputTextModule } from '../dxc-text-input/dxc-input-text.module';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { DxcLabelModule } from '../dxc-label/dxc-label.module';
     MatSelectModule,
     MatInputModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DxcInputTextModule
   ],
   exports: [DxcTimePickerComponent, DxcCronEditorComponent],
   declarations: [DxcTimePickerComponent, DxcCronEditorComponent]

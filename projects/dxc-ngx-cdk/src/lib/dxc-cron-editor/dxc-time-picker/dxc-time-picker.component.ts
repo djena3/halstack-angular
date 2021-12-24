@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
+import { CronOptions } from '../cronoptions';
 export interface TimePickerModel {
   days: number;
   hours: number;
@@ -15,7 +16,7 @@ function* range(start: number, end: number) {
 @Component({
   selector: 'dxc-time-picker',
   templateUrl: './dxc-time-picker.component.html',
-  styleUrls: ['./dxc-time-picker.component.css']
+  styleUrls: ['./dxc-time-picker.component.scss']
 })
 export class DxcTimePickerComponent {
   @Input() public disabled;
@@ -26,8 +27,8 @@ export class DxcTimePickerComponent {
   @Input() public includeEvery = false;
   @Input() public includeNone = false;
   @Input() public showStart = false;
-  
-
+  @Input() public resource: any;
+  @Input() public options: CronOptions;
   public minutes =  [...range(0, 59) ];
   public seconds = [...range(0, 59) ];
   public hourTypes = ['AM', 'PM'];
