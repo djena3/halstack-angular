@@ -123,7 +123,6 @@ export class DxcAccordionComponent implements OnInit, OnChanges, AfterViewInit {
       display: block;
       div.mat-expansion-panel-content {
         div.mat-expansion-panel-body {
-          font: normal normal normal 16px/22px var(--fontFamily);
           cursor: default;
           ${inputs.padding
             ? this.cssUtils.getPaddings(inputs.padding)

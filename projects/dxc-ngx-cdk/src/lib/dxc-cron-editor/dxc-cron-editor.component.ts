@@ -29,7 +29,7 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
   public activeTab: string;
   public selectOptions = this.getSelectOptions();
   public state: any;
-  private localCron = '0 0 1/1 * *';
+  private localCron = '* 0 0 ? * * *';
   private isDirty: boolean;
   cronForm: FormControl;
   minutesForm: FormGroup;
@@ -109,7 +109,7 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
     this.state = this.getDefaultState();
     this.handleModelChange(this.cron);
     const [defaultHours, defaultMinutes, defaultSeconds] = this.options.defaultTime.split(':').map(Number);
-    this.cronForm = new FormControl('0 0 1/1 * *');
+    this.cronForm = new FormControl('* 0 0 ? * * *');
     this.minutesForm = this.fb.group({
       hours: [0],
       minutes: [1],
@@ -204,8 +204,8 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
     this.yearlyForm.valueChanges.subscribe(next => this.computeYearlyCron(next));
 
     this.advancedForm = this.fb.group({
-      subTab: ['custom'],
-      expression: [this.isCronFlavorQuartz ? '0 15 10 L-2 * ? *' : '15 10 2 * *'],
+      subTab: ['expression'],
+      expression: [this.cron != null && this.cron !='' ? this.cron : this.isCronFlavorQuartz ? '0 15 10 L-2 * ? *' : '15 10 2 * *'],
       custom: this.fb.group({
         // monthWeek: ['*'],
         startDays: ['none'],
@@ -312,7 +312,7 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
         if (shouldUpdate)
           this.advancedForm.patchValue({ 'days': state.custom.days, 'month': state.custom.month });
         // this.cron = `${this.isCronFlavorQuartz ? state.custom.seconds : ''} ${state.custom.minutes} ${this.hourToCron(state.custom.hours, state.custom.hourType)} ${this.monthDayDefaultChar} ${state.custom.month} ${state.custom.day}${state.custom.monthWeek} ${state.custom.year}`.trim();
-        this.cron = `${this.getStartFrom( state.custom.startSeconds)}${this.isCronFlavorQuartz ? state.custom.seconds : ''} ${this.getStartFrom( state.custom.startMinutes)}${state.custom.minutes} ${this.getStartFrom( state.custom.startHours)}${this.hourToCron(state.custom.hours, state.custom.hourType)} ${this.getStartFrom( state.custom.startDays)}${state.custom.days.join(',')} ${this.getStartFrom( state.custom.startMonth)}${state.custom.month.join(',')}  ${this.getStartFrom( state.custom.startYear)}${this.weekDayDefaultChar} ${state.custom.year}`.trim();
+        this.cron = `${this.getStartFrom( state.custom.startSeconds)}${this.isCronFlavorQuartz ? state.custom.seconds : ''} ${this.getStartFrom( state.custom.startMinutes)}${state.custom.minutes} ${this.getStartFrom( state.custom.startHours)}${this.hourToCron(state.custom.hours, state.custom.hourType)} ${this.getStartFrom( state.custom.startDays)}${state.custom.days.join(',')} ${this.getStartFrom( state.custom.startMonth)}${state.custom.month.join(',')} ${this.getStartFrom( state.custom.startYear)}${this.weekDayDefaultChar} ${state.custom.year}`.trim();
         break;
       default:
         throw new Error('Invalid cron yearly subtab selection');
@@ -487,7 +487,7 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
 
   private getDefaultState() {
     const [defaultHours, defaultMinutes, defaultSeconds] = this.options.defaultTime.split(':').map(Number);
-    this.localCron = this.isCronFlavorQuartz ? '* 0 0 ? * * *' : '0 0 1/1 * *';
+    this.localCron = this.cron != null && this.cron !='' ? this.cron : this.isCronFlavorQuartz ? '* 0 0 ? * * *' : '0 0 1/1 * *';
     return {
       minutes: {
         minutes: 1,
@@ -568,7 +568,8 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
         }
       },
       advanced: {
-        expression: this.isCronFlavorQuartz ? '0 15 10 L-2 * ? *' : '15 10 2 * *'
+        subTab: 'expression',
+        expression: this.cron != null && this.cron !='' ? this.cron : this.isCronFlavorQuartz ? '0 15 10 L-2 * ? *' : '15 10 2 * *'
       }
     };
   }
@@ -627,8 +628,9 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
   onChange = (_: any) => { };
   onTouched = () => { };
 
-  writeValue(obj: string): void {
-    this.cron = obj;
+  writeValue(obj: string): void { 
+    this.cron = obj != null && obj !='' ? obj : this.isCronFlavorQuartz ? '0 15 10 L-2 * ? *' : '15 10 2 * *';
+    this.handleModelChange(this.cron);
   }
 
   registerOnChange(fn: any): void {
