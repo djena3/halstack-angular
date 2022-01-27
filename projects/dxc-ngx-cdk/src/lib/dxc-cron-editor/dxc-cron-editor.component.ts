@@ -31,6 +31,10 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
   public state: any;
   private localCron = '* 0 0 ? * * *';
   private isDirty: boolean;
+  expressionList: any = [];
+  selectedType='express';
+  isExpression:boolean = false;
+  isCustom:boolean=false;
   cronForm: FormControl;
   minutesForm: FormGroup;
   hourlyForm: FormGroup;
@@ -115,7 +119,10 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
       minutes: [1],
       seconds: [0]
     });
-
+    this.expressionList = [
+     {'name': 'Expression', 'value': 'express'},
+     {'name': 'Custom', 'value': 'cust'},
+    ];
     this.minutesForm.valueChanges.subscribe(value => this.computeMinutesCron(value));
 
     this.hourlyForm = this.fb.group({
@@ -322,6 +329,25 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
 
   public dayDisplay(day: string): string {
     return Days[day];
+  }
+
+  public onExpressionChange($event){
+    this.selectedType = $event;
+    if(this.selectedType=='express')
+    {
+      this.isExpression =true;
+      this.isCustom = false;
+    }
+    else if(this.selectedType=='cust')
+    {
+      this.isExpression =false;
+      this.isCustom = true;
+    }
+    else
+    {
+      this.isExpression =false;
+      this.isCustom = false;
+    }
   }
 
   public monthWeekDisplay(monthWeekNumber: string): string {
@@ -611,6 +637,8 @@ export class DxcCronEditorComponent implements OnInit, ControlValueAccessor {
       hourTypes: ['AM', 'PM']
     };
   }
+
+
 
   private getRange(start: number, end: number): number[] {
     const length = end - start + 1;
