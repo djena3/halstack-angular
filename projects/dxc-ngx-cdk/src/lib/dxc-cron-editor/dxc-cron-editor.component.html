@@ -1,12 +1,9 @@
-<section class="cron-editor-main">
-    <mat-tab-group class="cron-editor-container" (selectedIndexChange)="onTabFocus($event)"
-      [backgroundColor]="backgroundColor" [color]="color">
-
+<section class="cron-editor-main">   
       <!-- Advanced-->
-      <mat-tab class="cron-editor-tab"  [label]="resource?.selectCronExpression.description" *ngIf="!options.hideAdvancedTab">
+      <dxc-label id="cron-editor-tab" [text]="resource?.selectCronExpression.description"></dxc-label>
         <div class="cron-editor-tab-content" [formGroup]="advancedForm">  
 
-          <dxc-select class="main-dd-filter" (onChange)="isExpression=!isExpression" [customHandler]="false" tabIndexValue="-1" tabindex="0"
+          <dxc-select class="main-dd-filter" [ngClass]="options.formSelectClass" (onChange)="isExpression=!isExpression" [customHandler]="false" tabIndexValue="-1" tabindex="0"
                       aria-labelledby="lbl_cronexp" id="cronexp" matTooltip="" margin="small" size="fitContent"
                       formControlName="selectedType" >
                       <dxc-select-option *ngFor="let exp of expressionList" value="{{exp.value}}" label="{{exp.name}}">
@@ -116,7 +113,7 @@
           </div>
   
         </div>
-      </mat-tab>
-    </mat-tab-group>
+      
+    
   </section>
   
