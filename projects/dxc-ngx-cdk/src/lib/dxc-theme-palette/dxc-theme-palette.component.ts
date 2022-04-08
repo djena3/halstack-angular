@@ -14,7 +14,7 @@ import { IThemeInfo } from '../models/startup/configuration.model';
 
 export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input('isThemeOpen') isThemeOpen: boolean = false;
-  
+
   //@Input('themeColors') themeColors: { 'color': { 'primary': string, 'effect': string }, active: boolean }[] = null;
   //@Input('selectedThemeColor') selectedThemeColor: { [key: string]: any } = {};
   //@Input('themeBackgrounds') themeBackgrounds: { 'id': string, 'title': string, 'background': string, 'active': boolean }[] = null;
@@ -25,7 +25,8 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
   @Input('enablePopupMode') enablePopupMode: boolean = true;
   @Input('tabIndexValue') tabIndexValue: number = 0;
   @Input('showThemeToggle') showThemeToggle: boolean = true;
-  @Input('label') label: string = '';
+  @Input('labelDefault') labelDefault: string = '';
+  @Input('labelCustom') labelCustom: string = '';
   @Input('backgroundLabel') backgroundLabel: string = '';
   @Input('switchLabel') switchLabel: string = '';
   @Input('backgroundSwitchLabel') backgroundSwitchLabel: string = '';
@@ -34,9 +35,12 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
   @Input('colorShades') colorShades: Array<number> = [];
   @Input() border: boolean = false;
   @Input() public disabled: boolean = false;
-
+ // isCustomMode: boolean = false;
+  colorIndex: number = 0;
   @Output() themeChanged: EventEmitter<{ 'themeInfo': IThemeInfo, 'shades': any[] }> = new EventEmitter<{ 'themeInfo': IThemeInfo, 'shades': any[] }>();
   @Output() themeOpenChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() customThemeSelected: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() isCustomThemeSelected:boolean = false;
   // @Output() transparencyModeChanged: EventEmitter<any> = new EventEmitter<any>();
   // @Output() backgroundChange: EventEmitter<any> = new EventEmitter<any>();
   // @Output() themeColorChanged: EventEmitter<any> = new EventEmitter<any>();
@@ -136,6 +140,27 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
         }
       }
     }
+  }
+
+  customColor(event) {
+    this.colorIndex = event == true ? this.themeInfo.themeColors.findIndex(colorsObj => colorsObj.active == true) : this.colorIndex;
+    this.isCustomThemeSelected = event;
+    this.themeInfo.themeColors.forEach((colorObj, index) => {
+      colorObj.active = this.isCustomThemeSelected == true && colorObj.color?.custom == true ? true : this.isCustomThemeSelected != true && index == this.colorIndex ? true : false;
+    });
+    this.customThemeSelected.emit(this.isCustomThemeSelected);
+    this.emitEvent();
+  }
+
+  onPrimaryColor(index: any, event: any): void {
+    this.themeInfo.themeColors[index].color.primary = event?.color;
+    this.themeInfo.themeColors[index].color.effect = this.complexThemeBindingStrategy.setOpacity(event?.color, 0.4);
+    this.emitEvent();
+  }
+
+  onEffectColor(index: any, event: any): void {
+    this.themeInfo.themeColors[index].color.effect = event?.color;
+    this.emitEvent();
   }
 
   endFocus($event: any) {
