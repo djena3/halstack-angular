@@ -30,6 +30,7 @@
       [iconSrc]="firstImgSrc"
       [disabled]="currentPageInternal === 1"
       [tabIndexValue]="tabIndexValue"
+      class="paginator-button"
     ></dxc-button>
     <dxc-button
       *ngIf="showPrev"
@@ -40,6 +41,7 @@
       [iconSrc]="prevImgSrc"
       [disabled]="currentPageInternal === 1"
       [tabIndexValue]="tabIndexValue"
+      class="paginator-button"
     ></dxc-button>
     <span class="text-nowrap" *ngIf="!showGoToPage"> Page: {{ currentPageInternal }} of {{ totalPages }} </span>
     <span *ngIf="showGoToPage" class="go-to-page">
