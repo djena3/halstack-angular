@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit, HostListener, HostBinding, ChangeDetectorRef, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Inject, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit, HostListener, HostBinding, ChangeDetectorRef, OnDestroy, SimpleChanges, OnChanges } from '@angular/core';
 import { ComplexThemeBindingStrategy } from '../theme/complexThemeBindingStrategy';
 import { css } from "emotion";
 import { BehaviorSubject } from "rxjs";
@@ -12,7 +12,7 @@ import { IThemeInfo } from '../models/startup/configuration.model';
   providers: [CssUtils, ComplexThemeBindingStrategy]
 })
 
-export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input('isThemeOpen') isThemeOpen: boolean = false;
 
   //@Input('themeColors') themeColors: { 'color': { 'primary': string, 'effect': string }, active: boolean }[] = null;
@@ -25,22 +25,25 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
   @Input('enablePopupMode') enablePopupMode: boolean = true;
   @Input('tabIndexValue') tabIndexValue: number = 0;
   @Input('showThemeToggle') showThemeToggle: boolean = true;
+  @Input('label') label: string = '';
   @Input('labelDefault') labelDefault: string = '';
   @Input('labelCustom') labelCustom: string = '';
   @Input('backgroundLabel') backgroundLabel: string = '';
   @Input('switchLabel') switchLabel: string = '';
+  @Input('colorLabel') colorLabel: string = '';
   @Input('backgroundSwitchLabel') backgroundSwitchLabel: string = '';
   @Input('themePaletteLabel') themePaletteLabel: string = '';
   @Input('closeLabel') closeLabel: string = '';
   @Input('colorShades') colorShades: Array<number> = [];
   @Input() border: boolean = false;
   @Input() public disabled: boolean = false;
- // isCustomMode: boolean = false;
+
+  // isCustomMode: boolean = false;
   colorIndex: number = 0;
   @Output() themeChanged: EventEmitter<{ 'themeInfo': IThemeInfo, 'shades': any[] }> = new EventEmitter<{ 'themeInfo': IThemeInfo, 'shades': any[] }>();
   @Output() themeOpenChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() customThemeSelected: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() isCustomThemeSelected:boolean = false;
+ // @Input() isCustomThemeSelected:boolean = false;
   // @Output() transparencyModeChanged: EventEmitter<any> = new EventEmitter<any>();
   // @Output() backgroundChange: EventEmitter<any> = new EventEmitter<any>();
   // @Output() themeColorChanged: EventEmitter<any> = new EventEmitter<any>();
@@ -56,7 +59,7 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
     if (this.enablePopupMode)
       this.closeThemePalette();
   }
-
+  isCustomThemeSelected: boolean = false;
   defaultInputs = new BehaviorSubject<any>({
     value: null,
     checked: false,
@@ -83,6 +86,7 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
   ngOnInit(): void {
     // let selectedThemeColor = this.themeColors.filter((colors) => { return colors.active == true; });
     // this.selectedThemeColor = selectedThemeColor.length > 0 ? selectedThemeColor[0].color : '';
+    this.setCustomTheme(this.themeInfo);
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -92,6 +96,19 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
     }, {});
     this.defaultInputs.next({ ...this.defaultInputs.getValue(), ...inputs });
     this.className = `${this.getDynamicStyle(this.defaultInputs.getValue())}`;
+    if (JSON.stringify(changes.themeInfo?.currentValue) != JSON.stringify(changes.themeInfo?.previousValue)) {
+      this.setCustomTheme(changes.themeInfo?.currentValue);
+    }
+  }
+
+  private setCustomTheme(themeInfo: IThemeInfo) {
+    let customColorIndex = themeInfo.themeColors.findIndex(colorsObj => colorsObj?.color?.custom == true);
+    let selectedColorIndex = themeInfo.themeColors.findIndex(colorsObj => colorsObj.active == true);
+    if (customColorIndex == selectedColorIndex && customColorIndex != -1) {
+      this.isCustomThemeSelected = true;
+    } else {
+      this.colorIndex = selectedColorIndex;
+    }
   }
 
   ngOnDestroy(): void {
@@ -121,7 +138,9 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
 
   changeThemeColor = (index) => {
     this.themeInfo.themeColors.forEach(color => color.active = false);
+    let customColorIndex = this.themeInfo.themeColors.findIndex(colorsObj => colorsObj?.color?.custom == true);
     this.themeInfo.themeColors[index].active = true;
+    this.colorIndex = customColorIndex != index ? index : this.colorIndex;
     this.emitEvent();
   }
 
@@ -143,18 +162,18 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   customColor(event) {
-    this.colorIndex = event == true ? this.themeInfo.themeColors.findIndex(colorsObj => colorsObj.active == true) : this.colorIndex;
+    let selectedColorIndex = this.themeInfo.themeColors.findIndex(colorsObj => colorsObj?.color?.custom != true && colorsObj.active == true);
+    this.colorIndex = event != true && selectedColorIndex > 0 ? selectedColorIndex : this.colorIndex;
     this.isCustomThemeSelected = event;
     this.themeInfo.themeColors.forEach((colorObj, index) => {
       colorObj.active = this.isCustomThemeSelected == true && colorObj.color?.custom == true ? true : this.isCustomThemeSelected != true && index == this.colorIndex ? true : false;
     });
-    this.customThemeSelected.emit(this.isCustomThemeSelected);
     this.emitEvent();
   }
 
   onPrimaryColor(index: any, event: any): void {
     this.themeInfo.themeColors[index].color.primary = event?.color;
-    this.themeInfo.themeColors[index].color.effect = this.complexThemeBindingStrategy.setOpacity(event?.color, 0.4);
+    this.themeInfo.themeColors[index].color.effect = this.hexToRgb(this.complexThemeBindingStrategy.setOpacity(event?.color, 0.4), 0.4);
     this.emitEvent();
   }
 
@@ -162,6 +181,8 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
     this.themeInfo.themeColors[index].color.effect = event?.color;
     this.emitEvent();
   }
+
+  
 
   endFocus($event: any) {
     if (this.enablePopupMode) {
@@ -201,4 +222,15 @@ export class DxcThemePaletteComponent implements OnInit, AfterViewInit, OnDestro
     }
     this.themeChanged.emit({ 'themeInfo': this.themeInfo, 'shades': colorShadesList });
   }
+
+  private hexToRgb = (hex, opacity) => {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.substring(0, 7));
+    if(result){
+    var r= parseInt(result[1], 16);
+    var g= parseInt(result[2], 16);
+    var b= parseInt(result[3], 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+    return '#fffff';
+    }
 }

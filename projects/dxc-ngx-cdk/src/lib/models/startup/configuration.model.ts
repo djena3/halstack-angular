@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export interface IThemeInfo {
   "isDarkMode": boolean,
   "isTransparent": boolean,
-  "themeColors": { 'color': { 'primary': string, 'effect': string, 'custom'?: boolean}, active: boolean} [],
+  "themeColors": { 'color': { 'primary': string, 'effect': string, 'custom': boolean}, active: boolean} [],
   "backgrounds": { 'id': string, 'title': string, 'background': string, 'active': boolean } []
 }
 

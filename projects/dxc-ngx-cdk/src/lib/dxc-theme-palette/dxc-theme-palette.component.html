@@ -57,8 +57,8 @@
     </div>
     <div class="theme-colors d-inline-block w-100">
       <div class="p-2">
-        <span class="text-muted mb-2">{{labelDefault}}</span>
-        <dxc-switch [checked]="isCustomThemeSelected" (onChange)="customColor($event)" [ariaLabel]="switchLabel">
+          <span class="text-muted mb-2">{{labelDefault}}</span>
+        <dxc-switch [checked]="isCustomThemeSelected" (onChange)="customColor($event)" [ariaLabel]="colorLabel">
         </dxc-switch>
         <span class="text-muted mb-2">{{labelCustom}}</span>
         <div class="d-flex flex-row justify-content-between theme-palette" *ngIf="!isCustomThemeSelected">
@@ -74,10 +74,8 @@
             </i>
           </span>
         </div>
-
-
         <div class="d-flex flex-row set-circle theme-palette" *ngIf="isCustomThemeSelected">
-          <span *ngFor="let colors of themeInfo.themeColors; let i = index" [hidden]="colors.color?.custom != true">
+          <span *ngFor="let colors of themeInfo.themeColors; let i = index " [hidden]="colors.color?.custom != true">
             <span [ngClass]="{ active: colors.active}" [cpPosition]="'left'" role="button" attr.aria-checked="{{colors.active}}" role="radio"
               tabindex="{{disabled ? -1 : tabIndexValue}}" attr.aria-label="{{labelCustom + ' ' + colors.color?.primary}}"
               [colorPicker]="colors.color?.primary"
@@ -94,9 +92,9 @@
                   check</mat-icon>
               </i>
             </span>
-            <span [ngClass]="{ active: colors.active}" [cpPosition]="'top-left'" role="button" attr.aria-checked="{{colors.active}}" role="radio" *ngIf="themeInfo.isTransparent"
+            <span [ngClass]="{ active: colors.active}" [cpPosition]="'top-left'" role="button" attr.aria-checked="{{colors.active}}" role="radio" *ngIf="themeInfo.isTransparent && colors.color !=null && colors.color.effect !=null"
               tabindex="{{disabled ? -1 : tabIndexValue}}" attr.aria-label="{{labelCustom + ' ' + colors.color?.effect}}"
-              [colorPicker]="colors.color?.effect"
+              [colorPicker]="colors.color.effect"
               (cpInputChange)="onEffectColor(i, $event)"
               (cpSliderDragStart)="onEffectColor(i, $event)"
               (cpSliderChange)="onEffectColor(i, $event)"
@@ -113,6 +111,7 @@
         </div>
         <span #returntoend tabindex="-1" (onblur)="returnFocusOut($event)"></span>
         <span #dialogend tabindex="{{enablePopupMode ? 0 : -1}}" (focus)="endFocus($event)"></span>
-      </div>
+      <span #returntoend tabindex="-1" (onblur)="returnFocusOut($event)"></span>
+      <span #dialogend tabindex="{{enablePopupMode ? 0 : -1}}" (focus)="endFocus($event)"></span>
     </div>
   </div>
