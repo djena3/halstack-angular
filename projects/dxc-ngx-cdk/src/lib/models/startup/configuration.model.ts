@@ -9,8 +9,8 @@ import { BehaviorSubject } from 'rxjs';
 export interface IThemeInfo {
   "isDarkMode": boolean,
   "isTransparent": boolean,
-  "themeColors": { 'color': { 'primary': string, 'effect': string }, active: boolean } [],
-  "backgrounds": { 'id': string, 'title': string, 'background': string, 'active': boolean } []
+  "themeColors": { 'color': { 'primary': string, 'effect': string }, active: boolean }[],
+  "backgrounds": { 'id': string, 'title': string, 'background': string, 'active': boolean }[]
 }
 
 export interface IConfig {
@@ -22,10 +22,10 @@ export interface IConfig {
   ButtonIcon: { [key: string]: string };
   Settings: { [key: string]: any };
   Resources: { [key: string]: { description: string, type: string } };
-  ThemeInfo?: BehaviorSubject<IThemeInfo>;
+  //ThemeInfo?: BehaviorSubject<IThemeInfo>;
   // ;
-  // ThemeColors?: Array<{ [key: string]: any }>;
-  // ThemeMode?: string;
+  ThemeColors?: Array<{ [key: string]: any }>;
+  ThemeMode?: string;
 }
 
 
