@@ -13,7 +13,7 @@ import { css } from "emotion";
 import { BehaviorSubject } from "rxjs";
 import { CssUtils } from "../utils";
 import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coercion';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 @Component({
   selector: "dxc-slider",
   templateUrl: "./dxc-slider.component.html",
@@ -118,7 +118,6 @@ export class DxcSliderComponent implements OnInit, OnChanges, ControlValueAccess
 
   public onTouched: () => void = () => { };
   public onChangeRegister = (val) => { };
-  public formControl = new FormControl();
   writeValue(val: any): void {
     this.renderedValue = val || "";
   }
