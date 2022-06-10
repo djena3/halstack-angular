@@ -1,9 +1,9 @@
-<span
+<label
   [ngClass]="disabled ? 'disabled-span' : ''"
   *ngIf="showLimitsValues"
   [class]="minValueClass"
 >
-  {{ minValueLabel }}</span
+  {{ minValueLabel }}</label
 >
 <mat-slider
   disableRipple
@@ -17,12 +17,12 @@
   (mouseup)="mouseUp($event)"
   [tabIndex]="tabIndexValue"
 ></mat-slider>
-<span
+<label
   [ngClass]="disabled ? 'disabled-span' : ''"
   *ngIf="showLimitsValues"
   [class]="maxValueClass"
 >
-  {{ maxValueLabel }}</span
+  {{ maxValueLabel }}</label
 >
 <dxc-input-text
   *ngIf="showInput"
