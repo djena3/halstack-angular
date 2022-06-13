@@ -319,6 +319,7 @@ export class DxcSliderComponent implements OnInit, OnChanges, ControlValueAccess
     return css`
       font-size: 16px;
       font-family: var(--fontFamily);
+      font-color: var(--slider-font-color);
       margin-right: 15px;
     `;
   }
@@ -327,6 +328,7 @@ export class DxcSliderComponent implements OnInit, OnChanges, ControlValueAccess
     return css`
       font-size: 16px;
       font-family: var(--fontFamily);
+      font-color: var(--slider-font-color);
       margin-left: ${inputs.step === 1 ? "15px" : "20px"};
     `;
   }
