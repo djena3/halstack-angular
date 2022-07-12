@@ -182,6 +182,10 @@ export class DxcDateComponent implements OnChanges, OnInit, ControlValueAccessor
     }, {});
     this.defaultInputs.next({ ...this.defaultInputs.getValue(), ...inputs });
 
+    if(this.renderedValue && this.renderedValue != '' && !moment(this.value, this.format,true).isValid())
+    {  
+      this.writeValue(this.value);
+    }
     this.className = `${this.getDynamicStyle()}`;
     this.calendarDynamicStyle = `${this.getCalendarContentStyle()}`;
   }
