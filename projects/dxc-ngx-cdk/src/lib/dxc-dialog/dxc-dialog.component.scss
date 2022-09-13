@@ -1,0 +1,27 @@
+.ng-draggable {
+    cursor: grab;
+  }
+   
+  .ng-dragging {
+    cursor: grabbing;
+  }
+
+  .min-header {
+    // position: absolute !important;
+    // left: -45px;
+    // top: calc(100vh - 121px);
+    // width: 18% !important;
+    // z-index: 99999;
+    //transform: translate(calc(100% - 490px), 47px) rotate(0deg) scaleX(1) scaleY(1)!important;
+    transform: none !important;
+    bottom: -45px;
+    right: -43px;
+    position: absolute !important;
+
+
+}
+
+.minimise-container{
+  display: block !important;
+  margin: 0px !important; 
+}

@@ -1,10 +1,26 @@
-<div class="dialog">
+<div class="dialog" #dialogarea >
   <div class="backOverlay" role="overlay" (click)="onBackgroundClickHandler($event)" [class.backVisible]="overlay">
   </div>
   <div class="container">
-    <div class="dialogContainer">
+    <div  [ngClass]="{'dialogContainer':isMinVisible, 'min-header': !isMinVisible, 'minimise-container': !isMinVisible}" [ngResizable]="isMinVisible"  [ngDraggable]="isMinVisible" [handle]="dialogboxstart" [bounds]="dialogarea" [inBounds]="true" >
       <div class="content" tabindex="0" role="dialog" (keydown)="startKeyPress($event)" [attr.aria-label]="ariaLabel" [attr.aria-labelledby]="ariaLabelledBy" 
       [attr.aria-describedby]="ariaDescribedBy" #dialogboxstart>
+        <a href="javascript:void(0);" class="minIcon" *ngIf="isMinVisible" [attr.aria-label]="minButtonLabel" [matTooltip]="minButtonLabel"
+          (click)="onMinHandler($event)" [tabindex]="tabIndexValue" role="button">
+          <dxc-button-icon>
+            <span class="icon-dxc-wrapper">
+              <mat-icon class="mat-icon material-icons minmaxicon">minimize</mat-icon>
+            </span>
+          </dxc-button-icon>
+        </a>
+        <a href="javascript:void(0);" class="maxIcon" *ngIf="!isMinVisible" [attr.aria-label]="maxButtonLabel" [matTooltip]="maxButtonLabel"
+          (click)="onMaxHandler($event)" [tabindex]="tabIndexValue" role="button">
+          <dxc-button-icon>
+            <span class="icon-dxc-wrapper">
+              <mat-icon class="mat-icon material-icons maxiconfont">content_copy</mat-icon>
+            </span>
+          </dxc-button-icon>
+        </a>
         <a href="javascript:void(0);" class="closeIcon" *ngIf="isCloseVisible" [attr.aria-label]="closeButtonLabel" [matTooltip]="closeButtonLabel"
           (click)="onCloseHandler($event)" [tabindex]="tabIndexValue" role="button">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -13,7 +29,7 @@
             <path d="M0 0h24v24H0z" fill="none" />
           </svg>
         </a>
-        <ng-content></ng-content>
+        <ng-content #dialogcontent ></ng-content>
         <span #dialogboxreturn tabindex="-1" (onblur)="returnFocusOut($event)"></span>
         <span #dialogboxend tabindex="0" (focus)="endFocus($event)"></span>
       </div>

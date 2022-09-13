@@ -19,11 +19,13 @@ import { coerceBooleanProperty, coerceNumberProperty } from '@angular/cdk/coerci
   selector: "dxc-dialog",
   templateUrl: "./dxc-dialog.component.html",
   providers: [CssUtils],
+  styleUrls: ['./dxc-dialog.component.scss']
 })
 export class DxcDialogComponent implements AfterViewInit {
   @ViewChild('dialogboxstart', { read: ElementRef, static: false }) dialogboxstart: ElementRef;
   @ViewChild('dialogboxreturn', { read: ElementRef, static: false }) dialogboxreturn: ElementRef;
   @ViewChild('dialogboxend', { read: ElementRef, static: false }) dialogboxend: ElementRef;
+  @ViewChild('dialogcontent', { read: ElementRef, static: false }) dialogcontent: ElementRef;
   @Input('ariaLabel') ariaLabel: string = null;
   @Input('ariaLabelledBy') ariaLabelledBy: string = null;
   @Input('ariaDescribedBy') ariaDescribedBy: string = null; 
@@ -33,6 +35,8 @@ export class DxcDialogComponent implements AfterViewInit {
   }
 
   @Input() closeButtonLabel: string = 'Close'
+  @Input() minButtonLabel: string = 'Minimize'
+  @Input() maxButtonLabel: string = 'Maximize'
   @Input()
   get overlay(): boolean {
     return this._overlay;
@@ -49,6 +53,16 @@ export class DxcDialogComponent implements AfterViewInit {
     this._isCloseVisible = coerceBooleanProperty(value);
   }
   private _isCloseVisible = true;
+
+  private _isMinVisible = true;
+
+  @Input()
+  get isMinVisible(): boolean {
+    return this._isMinVisible;
+  }
+  set isMinVisible(value: boolean) {
+    this._isMinVisible = coerceBooleanProperty(value);
+  }
   @Input() padding: any;
   @Input()
   get tabIndexValue(): number {
@@ -61,11 +75,15 @@ export class DxcDialogComponent implements AfterViewInit {
   @Output() onCloseClick = new EventEmitter<any>();
   @Output() onBackgroundClick = new EventEmitter<any>();
 
+  @Output() onMinimiseClick = new EventEmitter<any>();
+  @Output() onMaxmiseClick = new EventEmitter<any>();
+
   @HostBinding("class") className;
 
   defaultInputs = new BehaviorSubject<any>({
     overlay: true,
     isCloseVisible: true,
+    isMaxVisible :false,
     padding: null,
     tabIndexValue: 0
   });
@@ -90,6 +108,30 @@ export class DxcDialogComponent implements AfterViewInit {
     this.onCloseClick.emit($event);
   }
 
+  public onMinHandler($event: any): void {
+    // var m = this.dialogcontent;
+    // this.onMinimiseClick.emit($event);
+    this.isMinVisible = false;
+    if(this.dialogboxreturn?.nativeElement?.parentElement != null){
+      let element = this.dialogboxreturn.nativeElement.parentElement.getElementsByTagName("form");
+      if(element.length > 0){
+        element[0].style.display = 'none';
+      }
+    }
+  }
+
+  public onMaxHandler($event: any): void {
+    // var m = this.dialogcontent;
+    // this.onMaxmiseClick.emit($event);
+    this.isMinVisible = true;
+    if(this.dialogboxreturn?.nativeElement?.parentElement != null){
+      let element = this.dialogboxreturn.nativeElement.parentElement.getElementsByTagName("form");
+      if(element.length > 0){
+        element[0].style.display = 'block';
+      }
+    }
+  }
+
   public onBackgroundClickHandler($event: any): void {
     this.onBackgroundClick.emit($event);
   }
@@ -97,6 +139,7 @@ export class DxcDialogComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.dialogboxstart.nativeElement.focus();
+      this.dialogcontent.nativeElement.focus();
     }, 1);
   }
 
@@ -190,6 +233,38 @@ export class DxcDialogComponent implements AfterViewInit {
                 height: 34px;
               }
             }
+            .minIcon {
+              display: flex;
+              justify-content: flex-end;
+              position: absolute;
+              top: 2px;
+              right: 52px;
+              svg {
+                cursor: pointer;
+                width: 34px;
+                height: 34px;
+              }
+            }
+            .maxIcon {
+                display: flex;
+                justify-content: flex-end;
+                position: absolute;
+                top: 13px;
+                right: 52px;
+                svg {
+                  cursor: pointer;
+                  width: 34px;
+                  height: 34px;
+                }
+              }
+              .minmaxicon
+              {
+                font-size:30px;
+              }  
+              .maxiconfont
+              {
+                font-size:23px;
+              } 
             .content {
               overflow-y: initial;
               ::-webkit-scrollbar {
